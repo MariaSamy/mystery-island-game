@@ -359,7 +359,7 @@ function complete(n){
   },650)
 }
 $('#startBtn').onclick=function(){ensureAudio();startAmbient();show(state.completed.length?'map':'story')};$('#openMap').onclick=function(){ensureAudio();startAmbient();show('map')};$('#homeBtn').onclick=function(){clearInterval(timerId);show('home')};$('#mapHome').onclick=function(){show('home')};$('#backBtn').onclick=function(){clearInterval(timerId);show('map')};
-$('.chapter-tab').forEach(function(b){b.onclick=function(){var ch=+b.dataset.ch;if(ch===2&&!(state.completed.indexOf(5)>-1||state.unlocked>=6)){toast('Complete the Ancient Vault first.');return}if(ch===3&&!(state.completed.indexOf(10)>-1||state.unlocked>=11)){toast('Awaken the Island Heart first.');return}state.chapter=ch;renderMap(ch);save()}});
+$$('.chapter-tab').forEach(function(b){b.onclick=function(){var ch=+b.dataset.ch;if(ch===2&&!(state.completed.indexOf(5)>-1||state.unlocked>=6)){toast('Complete the Ancient Vault first.');return}if(ch===3&&!(state.completed.indexOf(10)>-1||state.unlocked>=11)){toast('Awaken the Island Heart first.');return}state.chapter=ch;renderMap(ch);save()}});
 $('#rewardNext').onclick=function(){var n=+this.dataset.level;if(n===15){$('#finalScore').textContent=state.coins+' coins · '+state.stars+' stars · 15 Starfire shards';show('finale')}else if(n===10){show('dreamgate')}else{if(n===5)state.chapter=2;show('map');renderMap(state.chapter)}};
 $('#enterDreamsBtn').onclick=function(){state.chapter=3;save();show('map');renderMap(3)};
 $('#finalHome').onclick=function(){show('home')};$('#againBtn').onclick=function(){var keepName=state.playerName;state=JSON.parse(JSON.stringify(base));state.playerName=keepName;update();show('story')};$('#soundBtn').onclick=function(){state.sound=!state.sound;if(state.sound){ensureAudio();startAmbient();chime('good')}else stopAmbient();update()};
@@ -375,7 +375,7 @@ $('#dailyBtn').onclick=function(){renderDaily();openModal('dailyModal')};
 $('#certificateBtn').onclick=openCertificate;
 $('#printCertificateBtn').onclick=function(){window.print()};
 $('#closeCertificateBtn').onclick=function(){closeModal('certificateModal')};
-$('.modal-close').forEach(function(b){b.onclick=function(){closeModal(b.dataset.close)}});
+$$('.modal-close').forEach(function(b){b.onclick=function(){closeModal(b.dataset.close)}});
 ['nameModal','treasureModal','badgesModal','dailyModal','hallModal','certificateModal'].forEach(function(id){var m=$('#'+id);if(m)m.addEventListener('click',function(e){if(e.target===m)closeModal(id)})});
 
 document.addEventListener('visibilitychange',function(){if(document.hidden)stopAmbient();else if(state.sound)startAmbient()});
