@@ -58,6 +58,23 @@
     state.hooks = Object.assign(state.hooks, hooks || {});
   }
 
+  function handleGDEvent(event) {
+    if (!event || !event.name) return;
+    if (event.name === "SDK_READY") {
+      state.provider = "gamedistribution";
+      state.ready = true;
+      state.sdkReady = true;
+      return;
+    }
+    if (event.name === "SDK_GAME_PAUSE") {
+      pauseForAd();
+      return;
+    }
+    if (event.name === "SDK_GAME_START") {
+      resumeAfterAd();
+    }
+  }
+
   function gameplayStart() {
     try {
       if (state.provider === "crazygames" && w.CrazyGames.SDK.game) {
@@ -100,11 +117,14 @@
     }
 
     if (state.provider === "gamedistribution" && w.gdsdk && typeof w.gdsdk.showAd === "function") {
-      pauseForAd();
       try {
-        Promise.resolve(w.gdsdk.showAd()).then(finish).catch(finish);
+        Promise.resolve(w.gdsdk.showAd()).then(function () {
+          if (typeof done === "function") done();
+        }).catch(function () {
+          if (typeof done === "function") done();
+        });
       } catch (_) {
-        finish();
+        if (typeof done === "function") done();
       }
       return;
     }
@@ -155,6 +175,7 @@
   w.MysteryMonetization = {
     init,
     setHooks,
+    handleGDEvent,
     gameplayStart,
     gameplayStop,
     requestMidgame,
