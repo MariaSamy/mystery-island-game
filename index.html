@@ -139,8 +139,7 @@ main{position:relative;z-index:2}.screen{display:none;min-height:100vh;padding:9
 
 <div class="guide-float"><div id="guideBubble" class="guide-bubble"><b style="color:#ffe39b">Lumi says:</b><br><span id="guideText">Welcome to Mystery Island!</span></div><button id="guideButton" class="guide-button" title="Ask Lumi for help">🧚</button></div>
 
-<script>
-(function(){
+<script src="monetization.js"></script>\n<script>\n(function(){
 'use strict';
 var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.from((r||document).querySelectorAll(s))};
 var screens={home:$('#home'),story:$('#story'),map:$('#map'),level:$('#level'),reward:$('#reward'),dreamgate:$('#dreamgate'),finale:$('#finale')};
@@ -292,7 +291,7 @@ function startTimer(n){clearInterval(timerId);seconds=n;drawTimer();timerId=setI
 function drawTimer(){var m=String(Math.floor(seconds/60)).padStart(2,'0'),s=String(seconds%60).padStart(2,'0');$('#timer').textContent=m+':'+s}
 function lose(msg){state.hearts=Math.max(0,state.hearts-1);if(state.hearts===0){state.hearts=3;toast('Lumi restored your three hearts ✦')}else toast(msg);chime('bad');update()}
 function intro(icon,title,copy,steps){var stepHtml=(steps||[]).map(function(s,i){return '<div class="step"><strong>Step '+(i+1)+'</strong>'+s+'</div>'}).join('');return '<div class="stage-intro"><div class="icon">'+icon+'</div><h3>'+title+'</h3><p>'+copy+'</p></div><div class="guide-strip"><span class="mini">🧚</span><div><b>Lumi’s guide</b><p>'+meta[current].hint+'</p></div></div>'+(stepHtml?'<div class="steps">'+stepHtml+'</div>':'')}
-function enter(n){if(n>state.unlocked){toast('That path is still hidden in the mist.');return}current=n;$('#levelNo').textContent='LEVEL '+n;$('#levelTitle').textContent=meta[n].title;setGuide(meta[n].hint,true);render(n);show('level');setGuide(meta[n].hint,true);startTimer(meta[n].time)}
+function enter(n){if(n>state.unlocked){toast('That path is still hidden in the mist.');return}if(window.MysteryMonetization)window.MysteryMonetization.gameplayStart()current=n;$('#levelNo').textContent='LEVEL '+n;$('#levelTitle').textContent=meta[n].title;setGuide(meta[n].hint,true);render(n);show('level');setGuide(meta[n].hint,true);startTimer(meta[n].time)}
 function render(n){var fn={1:riddle,2:memory,3:sequence,4:cave,5:vault,6:forestTrail,7:lagoon,8:dragon,9:skyTemple,10:islandHeart,11:dreamGarden,12:mirrorLake,13:cloudLibrary,14:clockTower,15:dreamPalace}[n];if(fn)fn()}
 function riddle(){var st=$('#stage');st.innerHTML=intro('🗿','The gate listens for one true answer','Choose the object that matches every clue.',['Read all four lines.','Compare the four answers.','Tap the answer that fits every clue.'])+'<div class="riddle">I have keys but no locks,<br>I have space but no room,<br>You can enter, but you cannot go outside.<br><b>What am I?</b></div><div class="answers"><button class="answer" data-a="door">🚪 A Door</button><button class="answer" data-a="keyboard">⌨️ A Keyboard</button><button class="answer" data-a="map">🗺️ A Map</button><button class="answer" data-a="chest">🧰 A Treasure Chest</button></div><p class="feedback" id="fb"></p>';st.querySelector('.answers').onclick=function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.a==='keyboard'){b.classList.add('good');$('#fb').className='feedback good';$('#fb').textContent='Correct! The stone gate is waking…';complete(1)}else{b.classList.add('bad');$('#fb').className='feedback bad';$('#fb').textContent='Hint: keys, space, enter.';lose('A rune dimmed. Try another answer.')}}}
 function memory(){var st=$('#stage'),symbols=['🌙','⭐','🔑','💎','🍃','🔥'],deck=symbols.concat(symbols).sort(function(){return Math.random()-.5}),open=[],matched=0;st.innerHTML=intro('🧚‍♀️','Wake the sleeping fireflies','Find all six matching pairs.',['Tap one card to reveal its symbol.','Tap a second card.','If the symbols match, the pair stays open.'])+'<div class="memory" id="memory"></div><p class="feedback" id="fb">0 / 6 pairs found</p>';var g=$('#memory');deck.forEach(function(sym,i){var b=document.createElement('button');b.className='card closed';b.textContent='✦';b.dataset.sym=sym;b.dataset.i=i;g.appendChild(b)});g.onclick=function(e){var b=e.target.closest('.card');if(!b||b.classList.contains('matched')||open.indexOf(b)>-1||open.length===2)return;b.classList.remove('closed');b.textContent=b.dataset.sym;chime('tap');open.push(b);if(open.length===2){setTimeout(function(){if(open[0].dataset.sym===open[1].dataset.sym){open.forEach(function(x){x.classList.add('matched')});matched++;$('#fb').textContent=matched+' / 6 pairs found';chime('good');if(matched===6){$('#fb').className='feedback good';$('#fb').textContent='All six pairs are glowing!';complete(2)}}else{open.forEach(function(x){x.classList.add('closed');x.textContent='✦'})}open=[]},650)}}}
@@ -341,7 +340,7 @@ function dreamPalace(){
 }
 
 function complete(n){
-  clearInterval(timerId);
+  clearInterval(timerId);if(window.MysteryMonetization)window.MysteryMonetization.gameplayStop();
   setTimeout(function(){
     var fresh=state.completed.indexOf(n)===-1;
     if(fresh){
@@ -379,7 +378,7 @@ $$('.modal-close').forEach(function(b){b.onclick=function(){closeModal(b.dataset
 ['nameModal','treasureModal','badgesModal','dailyModal','hallModal','certificateModal'].forEach(function(id){var m=$('#'+id);if(m)m.addEventListener('click',function(e){if(e.target===m)closeModal(id)})});
 
 document.addEventListener('visibilitychange',function(){if(document.hidden)stopAmbient();else if(state.sound)startAmbient()});
-makeSky();update();setGuide('Welcome! I’m Lumi. I’ll explain every challenge and give you hints whenever you need me.');if(!cleanPlayerName(state.playerName)){setTimeout(function(){openModal('nameModal');$('#nameInput').focus()},500)}
+if(window.MysteryMonetization){window.MysteryMonetization.setHooks({pause:function(){clearInterval(timerId)},resume:function(){if(current&&screens.level.classList.contains('active'))startTimer(seconds||meta[current].time)},mute:function(){stopAmbient()},unmute:function(){if(state.sound)startAmbient()}});window.MysteryMonetization.init().catch(function(){})}\nmakeSky();update();setGuide('Welcome! I’m Lumi. I’ll explain every challenge and give you hints whenever you need me.');if(!cleanPlayerName(state.playerName)){setTimeout(function(){openModal('nameModal');$('#nameInput').focus()},500)}
 })();
 </script>
 </body>
