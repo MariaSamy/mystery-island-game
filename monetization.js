@@ -5,6 +5,10 @@
     provider: "none",
     ready: false,
     sdkReady: false,
+    rewardedReady: false,
+    gdRewardGranted: false,
+    gdRewardFn: null,
+    gdRewardDone: null,
     hooks: { pause: null, resume: null, mute: null, unmute: null },
   };
 
@@ -64,10 +68,25 @@
       state.provider = "gamedistribution";
       state.ready = true;
       state.sdkReady = true;
+      try {
+        if (w.gdsdk && typeof w.gdsdk.preloadAd === "function") {
+          Promise.resolve(w.gdsdk.preloadAd("rewarded"))
+            .then(function(){ state.rewardedReady = true; })
+            .catch(function(){ state.rewardedReady = false; });
+        }
+      } catch (_) {}
       return;
     }
     if (event.name === "SDK_GAME_PAUSE") {
       pauseForAd();
+      return;
+    }
+    if (event.name === "SDK_REWARDED_WATCH_COMPLETE") {
+      state.gdRewardGranted = true;
+      try {
+        if (typeof state.gdRewardFn === "function") state.gdRewardFn();
+      } catch (_) {}
+      state.gdRewardFn = null;
       return;
     }
     if (event.name === "SDK_GAME_START") {
@@ -164,7 +183,65 @@
       }
     }
 
-    // GD rewarded setup is added after a real gameId/account is available.
+    if (state.provider === "gamedistribution" && w.gdsdk && typeof w.gdsdk.showAd === "function") {
+      state.gdRewardGranted = false;
+      state.gdRewardFn = reward;
+      state.gdRewardDone = done;
+
+      var showRewarded = function () {
+        try {
+          Promise.resolve(w.gdsdk.showAd("rewarded"))
+            .then(function () {
+              var granted = !!state.gdRewardGranted;
+              var cb = state.gdRewardDone;
+              state.gdRewardDone = null;
+              state.gdRewardFn = null;
+              state.rewardedReady = false;
+              if (typeof cb === "function") cb(granted);
+              try {
+                if (w.gdsdk && typeof w.gdsdk.preloadAd === "function") {
+                  Promise.resolve(w.gdsdk.preloadAd("rewarded"))
+                    .then(function(){ state.rewardedReady = true; })
+                    .catch(function(){ state.rewardedReady = false; });
+                }
+              } catch (_) {}
+            })
+            .catch(function () {
+              var cb = state.gdRewardDone;
+              state.gdRewardDone = null;
+              state.gdRewardFn = null;
+              state.gdRewardGranted = false;
+              if (typeof cb === "function") cb(false);
+            });
+        } catch (_) {
+          var cb = state.gdRewardDone;
+          state.gdRewardDone = null;
+          state.gdRewardFn = null;
+          state.gdRewardGranted = false;
+          if (typeof cb === "function") cb(false);
+        }
+      };
+
+      if (!state.rewardedReady && typeof w.gdsdk.preloadAd === "function") {
+        try {
+          Promise.resolve(w.gdsdk.preloadAd("rewarded"))
+            .then(function(){ state.rewardedReady = true; showRewarded(); })
+            .catch(function(){
+              state.gdRewardFn = null;
+              state.gdRewardDone = null;
+              if (typeof done === "function") done(false);
+            });
+        } catch (_) {
+          state.gdRewardFn = null;
+          state.gdRewardDone = null;
+          if (typeof done === "function") done(false);
+        }
+      } else {
+        showRewarded();
+      }
+      return;
+    }
+
     if (typeof done === "function") done(false);
   }
 
