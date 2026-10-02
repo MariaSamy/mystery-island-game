@@ -116,12 +116,20 @@ var nodeData={
   1:[{n:1,x:9,y:82,name:'Whispering Gate',type:'Riddle'},{n:2,x:35,y:60,name:'Firefly Grove',type:'Memory'},{n:3,x:58,y:59,name:'Moon Bridge',type:'Sequence'},{n:4,x:77,y:38,name:'Crystal Cave',type:'Hidden Stars'},{n:5,x:92,y:19,name:'Ancient Vault',type:'Final Trial'}],
   2:[{n:6,x:10,y:24,name:'Enchanted Forest',type:'Memory Trail'},{n:7,x:31,y:53,name:'Mermaid Lagoon',type:'Pearl Hunt'},{n:8,x:55,y:29,name:'Dragon Mountain',type:'Shield Memory'},{n:9,x:76,y:61,name:'Sky Temple',type:'Constellation'},{n:10,x:92,y:25,name:'Island Heart',type:'Final Harmony'}]
 };
+function healProgress(p){
+  p=Object.assign({},base,p,{completed:Array.isArray(p.completed)?p.completed:[]});
+  var highest=p.completed.length?Math.max.apply(null,p.completed):0;
+  p.unlocked=Math.max(1,p.unlocked||1,Math.min(10,highest+1));
+  if(p.completed.indexOf(5)>-1)p.unlocked=Math.max(p.unlocked,6);
+  if(p.completed.indexOf(10)>-1)p.unlocked=10;
+  return p;
+}
 function load(){
   try{
     var v4=JSON.parse(localStorage.getItem('mysteryIslandV4')||'null');
-    if(v4)return Object.assign({},base,v4,{completed:Array.isArray(v4.completed)?v4.completed:[]});
+    if(v4)return healProgress(v4);
     var v3=JSON.parse(localStorage.getItem('mysteryIslandV3')||'null');
-    if(v3){var migrated=Object.assign({},base,v3,{completed:Array.isArray(v3.completed)?v3.completed:[]});migrated.unlocked=Math.max(1,migrated.unlocked||1);return migrated;}
+    if(v3)return healProgress(v3);
   }catch(e){}
   return JSON.parse(JSON.stringify(base));
 }
@@ -139,6 +147,7 @@ function stopAmbient(){clearInterval(ambientTimer);ambientTimer=null}
 function burst(x,y){for(var i=0;i<18;i++){var p=document.createElement('i');p.className='spark';p.style.left=x+'px';p.style.top=y+'px';var a=Math.random()*Math.PI*2,d=45+Math.random()*95;p.style.setProperty('--x',Math.cos(a)*d+'px');p.style.setProperty('--y',Math.sin(a)*d+'px');document.body.appendChild(p);setTimeout(function(el){el.remove()},1000,p)}}
 function celebrate(){var x=window.innerWidth/2,y=window.innerHeight/2;burst(x,y);setTimeout(function(){burst(x-120,y+30);burst(x+120,y-20)},220);chime('magic')}
 function update(){
+  state=healProgress(state);
   var done=state.completed.length;$('#hearts').textContent=state.hearts;$('#coins').textContent=state.coins;$('#starsN').textContent=state.stars;$('#progressText').textContent=done+' / 10';$('#progressBar').style.width=(done*10)+'%';$('#soundBtn').textContent=state.sound?'🔊':'🔇';
   var marks=[];for(var i=1;i<=10;i++)marks.push(state.completed.indexOf(i)>-1?'✦':'◇');$('#shards').textContent=marks.join(' ');renderMap(state.chapter||1);save();
 }
