@@ -1,3 +1,7 @@
+# GameDistribution Game ID
+
+`a38bbe72c61c4a3b8f931619439d3d32`
+
 # Mystery Island — Monetization Preparation
 
 This branch is the monetization-ready build. The public GitHub Pages game on `main` remains the clean testing version.
@@ -57,7 +61,12 @@ Official docs:
 - Public test build: `main`
 - Monetization build: `monetization-ready`
 - Platform-neutral adapter: `monetization.js`
-- No fake ad IDs or fake earnings logic
+- Real GameDistribution game ID connected
+- Official GameDistribution SDK loader connected
+- Pre-roll hook on Begin Adventure
+- Mid-roll hook on level-complete continuation
+- Pause/mute and resume/unmute lifecycle hooks connected
+- No fake earnings logic
 - Existing player flow is preserved
 
 ## Next external step
