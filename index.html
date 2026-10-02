@@ -113,7 +113,7 @@ main{position:relative;z-index:2}.screen{display:none;min-height:100vh;padding:9
     <p>Explore three enchanted chapters, solve fifteen different trials, collect Starfire shards and discover the secret beyond the Heart of Mystery Island.</p>
     <p class="welcome-player" id="welcomePlayer">Welcome, Explorer ✨</p>
     <div class="actions"><button class="primary" id="startBtn">Begin the Adventure →</button><button class="ghost" id="howBtn">How to Play</button></div>
-    <div class="feature-actions"><button class="ghost" id="dailyBtn">☀ Daily Challenge</button><button class="ghost" id="treasureBtn">🎁 Treasure Room</button><button class="ghost" id="badgesBtn">🏆 Achievements</button><button class="ghost" id="hallBtn">🌟 Hall of Fame</button></div>
+    <div class="feature-actions"><button class="ghost" id="dailyBtn">☀ Daily Challenge</button><button class="ghost" id="treasureBtn">🎁 Treasure Room</button><button class="ghost" id="badgesBtn">🏆 Achievements</button><button class="ghost" id="hallBtn">🌟 Hall of Fame</button><button class="ghost" id="rewardAdBtn">🎬 Watch Ad · +25 Coins</button></div>
     <div class="guide-home"><div class="guide-face">🧚</div><p><b>Hello, I’m Lumi.</b><br>I’ll travel with you. On every level I’ll explain exactly what to do — and I can give you a hint whenever you need one.</p></div>
     <div class="progress"><p><b>Island Journey</b> <span id="progressText" style="float:right">0 / 10</span></p><div class="track"><i id="progressBar"></i></div></div>
   </div>
@@ -396,6 +396,7 @@ $('#treasureBtn').onclick=function(){renderTreasureRoom();openModal('treasureMod
 $('#badgesBtn').onclick=function(){renderAchievements();openModal('badgesModal')};
 $('#hallBtn').onclick=function(){renderHall();openModal('hallModal')};
 $('#dailyBtn').onclick=function(){renderDaily();openModal('dailyModal')};
+$('#rewardAdBtn').onclick=function(){var b=this;if(!window.MysteryMonetization){toast('Rewarded ad is not available right now.');return}b.disabled=true;b.textContent='Preparing reward…';window.MysteryMonetization.requestRewarded('coin-gift',function(){state.coins+=25;update();chime('good');celebrate();toast('Reward earned: +25 coins ✨')},function(ok){b.disabled=false;b.textContent='🎬 Watch Ad · +25 Coins';if(!ok)toast('Rewarded ad was not completed. No coins were added.')})};
 $('#certificateBtn').onclick=openCertificate;
 $('#printCertificateBtn').onclick=function(){window.print()};
 $('#closeCertificateBtn').onclick=function(){closeModal('certificateModal')};
