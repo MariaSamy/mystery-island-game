@@ -43,13 +43,25 @@ main{position:relative;z-index:2}.screen{display:none;min-height:100vh;padding:9
 .guide-float{position:fixed;z-index:75;right:18px;bottom:18px;display:flex;align-items:flex-end;gap:9px}.guide-bubble{width:min(330px,70vw);padding:12px 14px;border-radius:18px 18px 4px 18px;background:rgba(15,31,69,.96);border:1px solid rgba(214,188,255,.25);box-shadow:0 18px 45px rgba(0,0,0,.35);display:none;font-size:13px;line-height:1.45}.guide-bubble.show{display:block;animation:pop .25s ease-out}@keyframes pop{from{transform:scale(.92);opacity:0}}.guide-button{width:62px;height:62px;border-radius:50%;border:2px solid rgba(255,227,151,.45);background:radial-gradient(circle at 35% 30%,#fff3c5,#e6bc61 42%,#654eb3 80%);font-size:37px;cursor:pointer;box-shadow:0 0 30px rgba(190,153,255,.28);animation:bob 2.4s ease-in-out infinite}
 @media(max-width:920px){.home.active{align-items:flex-start}.hero{width:100%;margin-top:305px}.island{right:50%;transform:translate(50%,-45%);top:30%;width:300px}.island .top{font-size:56px}.island .rock{left:58px;right:58px}.moon{width:115px;height:115px;right:7%;top:92px}.map{height:540px}}
 @media(max-width:650px){header{height:66px;padding:8px 9px}.brand small{display:none}.pill{padding:6px 7px;font-size:12px}.screen{padding:82px 11px 26px}.hero{margin-top:255px;padding:24px 18px}.hero h1{font-size:42px}.island{width:245px}.island .top{font-size:43px}.island .rock{left:48px;right:48px;top:100px;height:140px}.island .fall{top:105px;height:132px}.actions>*{width:100%}.answers{grid-template-columns:1fr}.memory{grid-template-columns:repeat(3,1fr);gap:8px}.card{font-size:36px}.map{height:510px}.node span{width:55px;height:55px}.node b{font-size:9px;white-space:normal;max-width:78px}.node small{display:none}.heading{align-items:flex-start}.stage{padding:20px 12px;min-height:590px}.rune{width:67px;height:67px;font-size:29px}.vault{width:205px;height:205px}.slot{width:56px;height:56px}.rewards{gap:6px}.rewards div{padding:12px 5px}.steps{grid-template-columns:1fr}.guide-strip{align-items:flex-start}.chapter-tabs{flex-direction:column}.forest,.lagoon,.skytemple{height:350px}.lantern{width:54px;height:54px}.shields{gap:8px}.guide-float{right:10px;bottom:10px}.guide-button{width:55px;height:55px;font-size:32px}.guide-bubble{width:min(300px,72vw)}}
+
+/* Player identity, achievements, daily challenge and treasure room */
+.profile-pill{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.feature-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}.feature-actions .ghost{min-height:42px;padding:0 14px;font-size:13px}
+.welcome-player{color:#ffe7a0!important;font-weight:750;margin-top:-6px!important}
+.collection-grid,.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.collectible,.badge{min-height:145px;border-radius:20px;padding:18px 12px;text-align:center;background:rgba(8,28,61,.62);border:1px solid rgba(174,225,255,.13);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}.collectible .big,.badge .big{font-size:38px;filter:drop-shadow(0 0 14px rgba(255,225,130,.22))}.collectible small,.badge small{color:#9fb6ca;line-height:1.35}.collectible.locked,.badge.locked{filter:grayscale(1);opacity:.35}.badge.earned{border-color:rgba(255,222,120,.35);box-shadow:inset 0 0 28px rgba(255,214,94,.06)}
+.modal-wide{width:min(820px,100%)}.modal-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}.name-input{width:100%;height:54px;border-radius:15px;border:1px solid rgba(178,226,255,.2);background:rgba(6,21,49,.78);color:#fff;padding:0 16px;font:inherit;outline:none}.name-input:focus{border-color:#8eeaff;box-shadow:0 0 0 3px rgba(126,238,255,.08)}
+.daily-card{max-width:610px;margin:14px auto 0;padding:20px;border-radius:20px;background:rgba(7,25,57,.68);border:1px solid rgba(255,222,133,.18)}.daily-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.daily-option{min-height:52px;border-radius:14px;border:1px solid rgba(178,226,255,.15);background:rgba(10,31,65,.76);cursor:pointer;font-weight:800}.daily-option:hover{transform:translateY(-1px);border-color:rgba(126,238,255,.42)}
+.certificate-card{position:relative;overflow:hidden;width:min(820px,100%);padding:48px;border-radius:28px;text-align:center;background:linear-gradient(145deg,#f7edc5,#fffdf2 56%,#e8d39b);color:#243354;border:8px double #b89144;box-shadow:0 30px 90px rgba(0,0,0,.45)}.certificate-card:before,.certificate-card:after{content:'✦';position:absolute;font-size:120px;color:rgba(177,139,57,.08)}.certificate-card:before{left:-20px;top:-35px}.certificate-card:after{right:-20px;bottom:-55px}.certificate-card h2{font:700 clamp(36px,5vw,56px) Georgia,serif;margin:8px 0;color:#26385b}.certificate-name{font:700 clamp(30px,4vw,44px) Georgia,serif;color:#8b6526;border-bottom:1px solid rgba(139,101,38,.35);display:inline-block;padding:0 18px 6px;margin:12px 0}.certificate-card p{line-height:1.65}.certificate-seal{font-size:64px;margin:15px 0 3px}.certificate-stats{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-weight:800}.certificate-actions{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+@media(max-width:720px){.profile-pill{display:none}.collection-grid,.badge-grid{grid-template-columns:repeat(2,1fr)}.daily-options{grid-template-columns:1fr}.certificate-card{padding:34px 18px}.feature-actions>*{flex:1 1 45%}}
+@media print{body *{visibility:hidden!important}.certificate-card,.certificate-card *{visibility:visible!important}.certificate-card{position:absolute;left:0;top:0;width:100%;max-width:none;box-shadow:none;border:8px double #8b6526}.certificate-actions{display:none!important}}
+
 </style>
 </head>
 <body>
 <div id="sky"></div><div class="aurora"></div><div id="toast" class="toast"></div>
 <header>
   <button class="brand" id="homeBtn"><span class="orb">✦</span><span><b>Mystery Island</b><small>The Lost Treasure</small></span></button>
-  <div class="stats"><span class="pill">❤️ <b id="hearts">3</b></span><span class="pill">🪙 <b id="coins">0</b></span><span class="pill">⭐ <b id="starsN">0</b></span><button class="round" id="soundBtn" title="Sound">🔊</button></div>
+  <div class="stats"><button class="pill profile-pill" id="profileBtn" title="Player profile">👤 <b id="playerNameMini">Explorer</b></button><span class="pill">❤️ <b id="hearts">3</b></span><span class="pill">🪙 <b id="coins">0</b></span><span class="pill">⭐ <b id="starsN">0</b></span><button class="round" id="soundBtn" title="Sound">🔊</button></div>
 </header>
 <main>
 <section id="home" class="screen home active">
@@ -58,7 +70,9 @@ main{position:relative;z-index:2}.screen{display:none;min-height:100vh;padding:9
     <p class="eyebrow">A MAGICAL PUZZLE ADVENTURE</p>
     <h1>Where moonlight touches the sea,<br><em>an island awakens.</em></h1>
     <p>Explore two enchanted chapters, solve ten different trials, collect Starfire shards and awaken the Heart of Mystery Island.</p>
+    <p class="welcome-player" id="welcomePlayer">Welcome, Explorer ✨</p>
     <div class="actions"><button class="primary" id="startBtn">Begin the Adventure →</button><button class="ghost" id="howBtn">How to Play</button></div>
+    <div class="feature-actions"><button class="ghost" id="dailyBtn">☀ Daily Challenge</button><button class="ghost" id="treasureBtn">🎁 Treasure Room</button><button class="ghost" id="badgesBtn">🏆 Achievements</button></div>
     <div class="guide-home"><div class="guide-face">🧚</div><p><b>Hello, I’m Lumi.</b><br>I’ll travel with you. On every level I’ll explain exactly what to do — and I can give you a hint whenever you need one.</p></div>
     <div class="progress"><p><b>Island Journey</b> <span id="progressText" style="float:right">0 / 10</span></p><div class="track"><i id="progressBar"></i></div></div>
   </div>
@@ -86,10 +100,21 @@ main{position:relative;z-index:2}.screen{display:none;min-height:100vh;padding:9
 
 <section id="reward" class="screen reward"><div class="reward-card glass"><div class="big-shard">✦</div><p class="eyebrow">TRIAL COMPLETE</p><h2 id="rewardTitle">The path awakens.</h2><p id="rewardText" style="color:#adc4d7">A Starfire shard rises from the ancient stone.</p><div class="rewards"><div>🪙<b id="rc">+50</b><small>Coins</small></div><div>⭐<b id="rs">+3</b><small>Stars</small></div><div>✦<b id="rsh">1/10</b><small>Shards</small></div></div><button class="primary" id="rewardNext">Return to the Map →</button></div></section>
 
-<section id="finale" class="screen finale"><div class="final-card glass"><div class="chest">💎</div><p class="eyebrow">CHAPTER II COMPLETE</p><h2>The Heart of Mystery Island is awake!</h2><p style="color:#adc4d7;line-height:1.7">The ten Starfire shards circle the island’s heart. Forest, sea, fire and sky glow together — and a new constellation appears above the horizon.</p><p><b id="finalScore"></b></p><div class="actions" style="justify-content:center"><button class="primary" id="againBtn">Play Again ↻</button><button class="ghost" id="finalHome">Home</button></div></div></section>
+<section id="finale" class="screen finale"><div class="final-card glass"><div class="chest">💎</div><p class="eyebrow">CHAPTER II COMPLETE</p><h2>The Heart of Mystery Island is awake!</h2><p style="color:#adc4d7;line-height:1.7">The ten Starfire shards circle the island’s heart. Forest, sea, fire and sky glow together — and a new constellation appears above the horizon.</p><p><b id="finalScore"></b></p><div class="actions" style="justify-content:center"><button class="primary" id="certificateBtn">🏅 My Certificate</button><button class="ghost" id="againBtn">Play Again ↻</button><button class="ghost" id="finalHome">Home</button></div></div></section>
 </main>
 
 <div id="howModal" class="modal"><div class="modal-card glass"><button class="close" id="closeHow">×</button><p class="eyebrow">HOW TO PLAY</p><h2>Ten magical trials. One living island.</h2><p>Follow the map from level 1 to level 10. Every level has a different challenge. Lumi explains the rules before you begin. Complete a trial to earn coins, stars and a Starfire shard.</p><p><b>Need help?</b> Tap Lumi 🧚 at the bottom-right at any time for a simple hint.</p><p>Your progress is saved automatically on this device.</p></div></div>
+
+
+<div id="nameModal" class="modal"><div class="modal-card glass"><button class="close modal-close" data-close="nameModal">×</button><p class="eyebrow">YOUR ADVENTURER NAME</p><h2>What should Lumi call you?</h2><p>Enter a name for your journey. It will appear on your completion certificate.</p><input id="nameInput" class="name-input" maxlength="24" placeholder="Explorer name"><div class="modal-actions"><button class="primary" id="saveNameBtn">Start my journey ✦</button></div></div></div>
+
+<div id="treasureModal" class="modal"><div class="modal-card modal-wide glass"><button class="close modal-close" data-close="treasureModal">×</button><p class="eyebrow">TREASURE ROOM</p><h2>Your magical collection</h2><p style="color:#b7ccdd">Every important victory leaves a treasure in this room.</p><div id="treasureGrid" class="collection-grid"></div></div></div>
+
+<div id="badgesModal" class="modal"><div class="modal-card modal-wide glass"><button class="close modal-close" data-close="badgesModal">×</button><p class="eyebrow">ACHIEVEMENTS</p><h2>Adventurer badges</h2><p style="color:#b7ccdd">Complete special milestones to make each badge glow.</p><div id="badgeGrid" class="badge-grid"></div></div></div>
+
+<div id="dailyModal" class="modal"><div class="modal-card glass"><button class="close modal-close" data-close="dailyModal">×</button><p class="eyebrow">DAILY CHALLENGE</p><h2>One little mystery each day</h2><div id="dailyBody"></div></div></div>
+
+<div id="certificateModal" class="modal"><div class="certificate-card"><p style="letter-spacing:.2em;font-weight:900">MYSTERY ISLAND</p><div class="certificate-seal">✦</div><h2>Certificate of Adventure</h2><p>This certifies that</p><div id="certificateName" class="certificate-name">Explorer</div><p>has completed all ten magical trials, gathered the Starfire shards, and awakened the <b>Heart of Mystery Island</b>.</p><div class="certificate-stats"><span id="certificateCoins">🪙 0 coins</span><span id="certificateStars">⭐ 0 stars</span><span>✦ 10 shards</span></div><p id="certificateDate" style="margin-top:22px"></p><p><b>Lumi 🧚 · Guide of Mystery Island</b></p><div class="certificate-actions"><button class="primary" id="printCertificateBtn">🖨 Print / Save as PDF</button><button class="ghost" id="closeCertificateBtn" style="color:#243354;border-color:rgba(36,51,84,.25)">Close</button></div></div></div>
 
 <div class="guide-float"><div id="guideBubble" class="guide-bubble"><b style="color:#ffe39b">Lumi says:</b><br><span id="guideText">Welcome to Mystery Island!</span></div><button id="guideButton" class="guide-button" title="Ask Lumi for help">🧚</button></div>
 
@@ -110,7 +135,7 @@ var meta={
   9:{title:'Sky Temple',time:100,coins:200,stars:5,hint:'Follow the constellation shown at the top. Tap those four star symbols in the same order.'},
   10:{title:'Heart of the Island',time:120,coins:300,stars:7,hint:'Forest = leaf, Sea = wave, Fire = flame, Sky = star.'}
 };
-var base={hearts:3,coins:0,stars:0,completed:[],unlocked:1,sound:true,chapter:1};
+var base={hearts:3,coins:0,stars:0,completed:[],unlocked:1,sound:true,chapter:1,playerName:'',dailyDate:''};
 var state=load(),current=1,timerId=null,seconds=60,audio=null,ambientTimer=null,toastId=null,guideOpen=false,currentHint='Welcome to Mystery Island!';
 var nodeData={
   1:[{n:1,x:9,y:82,name:'Whispering Gate',type:'Riddle'},{n:2,x:35,y:60,name:'Firefly Grove',type:'Memory'},{n:3,x:58,y:59,name:'Moon Bridge',type:'Sequence'},{n:4,x:77,y:38,name:'Crystal Cave',type:'Hidden Stars'},{n:5,x:92,y:19,name:'Ancient Vault',type:'Final Trial'}],
@@ -124,6 +149,46 @@ function healProgress(p){
   if(p.completed.indexOf(10)>-1)p.unlocked=10;
   return p;
 }
+
+var treasureDefs=[
+  {level:1,icon:'🗿',name:'Whispering Stone',desc:'Won at the first gate'},
+  {level:2,icon:'🏮',name:'Firefly Lantern',desc:'Lit in the memory grove'},
+  {level:3,icon:'🧭',name:'Moon Compass',desc:'Guided you across the bridge'},
+  {level:4,icon:'💎',name:'Crystal Star',desc:'Found in the hidden cave'},
+  {level:5,icon:'👑',name:'Ancient Crown',desc:'Recovered from the vault'},
+  {level:7,icon:'🦪',name:'Mermaid Pearl',desc:'Gift from the lagoon'},
+  {level:8,icon:'🐲',name:'Dragon Scale',desc:'Earned on Dragon Mountain'},
+  {level:9,icon:'🔷',name:'Sky Temple Key',desc:'Forged among constellations'},
+  {level:10,icon:'💖',name:'Island Heart',desc:'The final living treasure'}
+];
+var achievementDefs=[
+  {icon:'✨',name:'First Spark',desc:'Complete Level 1',test:function(){return state.completed.indexOf(1)>-1}},
+  {icon:'🧠',name:'Memory Keeper',desc:'Complete Firefly Grove',test:function(){return state.completed.indexOf(2)>-1}},
+  {icon:'🏛️',name:'Vault Opener',desc:'Finish Chapter I',test:function(){return state.completed.indexOf(5)>-1}},
+  {icon:'🐉',name:'Dragon Friend',desc:'Complete Dragon Mountain',test:function(){return state.completed.indexOf(8)>-1}},
+  {icon:'🌟',name:'Star Collector',desc:'Collect 30 stars',test:function(){return state.stars>=30}},
+  {icon:'👑',name:'Island Guardian',desc:'Complete all 10 levels',test:function(){return state.completed.indexOf(10)>-1}}
+];
+var dailyQuestions=[
+  {q:'Which magical object opens a lock?',opts:['🌙 Moon','🔑 Key','🌊 Wave','🍃 Leaf'],a:1},
+  {q:'Which symbol best belongs to the night sky?',opts:['🔥 Flame','🌿 Leaf','⭐ Star','💧 Drop'],a:2},
+  {q:'Which treasure came from Mermaid Lagoon?',opts:['🦪 Pearl','🐲 Scale','👑 Crown','🗿 Stone'],a:0},
+  {q:'Forest power is represented by…',opts:['🌊 Wave','🍃 Leaf','⭐ Star','🔥 Flame'],a:1},
+  {q:'Which place comes immediately after the Ancient Vault?',opts:['Dragon Mountain','Enchanted Forest','Sky Temple','Crystal Cave'],a:1},
+  {q:'Fire power is represented by…',opts:['🔥 Flame','🌙 Moon','🔑 Key','🦪 Pearl'],a:0},
+  {q:'How many Starfire shards complete the full island journey?',opts:['5','8','10','12'],a:2}
+];
+function localDateKey(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function cleanPlayerName(v){return String(v||'').replace(/[<>]/g,'').trim().slice(0,24)}
+function renderPlayer(){var name=cleanPlayerName(state.playerName)||'Explorer';if($('#playerNameMini'))$('#playerNameMini').textContent=name;if($('#welcomePlayer'))$('#welcomePlayer').textContent='Welcome, '+name+' ✨';if($('#dailyBtn'))$('#dailyBtn').textContent=state.dailyDate===localDateKey()?'✓ Daily Challenge':'☀ Daily Challenge'}
+function openModal(id){var m=$('#'+id);if(m)m.classList.add('open')}
+function closeModal(id){var m=$('#'+id);if(m)m.classList.remove('open')}
+function renderTreasureRoom(){var g=$('#treasureGrid');if(!g)return;g.innerHTML='';treasureDefs.forEach(function(t){var earned=state.completed.indexOf(t.level)>-1,d=document.createElement('div');d.className='collectible'+(earned?'':' locked');d.innerHTML='<div class="big">'+(earned?t.icon:'🔒')+'</div><b>'+t.name+'</b><small>'+(earned?t.desc:'Complete Level '+t.level+' to unlock')+'</small>';g.appendChild(d)})}
+function renderAchievements(){var g=$('#badgeGrid');if(!g)return;g.innerHTML='';achievementDefs.forEach(function(a){var earned=a.test(),d=document.createElement('div');d.className='badge '+(earned?'earned':'locked');d.innerHTML='<div class="big">'+(earned?a.icon:'◌')+'</div><b>'+a.name+'</b><small>'+a.desc+'</small>';g.appendChild(d)})}
+function dailyIndex(){var d=new Date();return Math.abs(Math.floor(new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime()/86400000))%dailyQuestions.length}
+function renderDaily(){var body=$('#dailyBody');if(!body)return;var today=localDateKey();if(state.dailyDate===today){body.innerHTML='<div class="daily-card"><div style="font-size:54px">🌟</div><h3>Today’s challenge is complete!</h3><p>Come back tomorrow for another little mystery.</p><p><b>Reward collected: 🪙 25 coins + ⭐ 1 star</b></p></div>';return}var q=dailyQuestions[dailyIndex()];body.innerHTML='<div class="daily-card"><div style="font-size:46px">☀️</div><h3>'+q.q+'</h3><div class="daily-options" id="dailyOptions"></div><p class="feedback" id="dailyFeedback">Reward: 🪙 25 coins + ⭐ 1 star</p></div>';var opts=$('#dailyOptions');q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='daily-option';b.textContent=o;b.dataset.i=i;opts.appendChild(b)});opts.onclick=function(e){var b=e.target.closest('button');if(!b)return;if(+b.dataset.i===q.a){state.dailyDate=today;state.coins+=25;state.stars+=1;$('#dailyFeedback').className='feedback good';$('#dailyFeedback').textContent='Correct! Your daily treasure has been added. ✨';chime('good');celebrate();update();setTimeout(renderDaily,900)}else{$('#dailyFeedback').className='feedback bad';$('#dailyFeedback').textContent='Not quite. Lumi says: try another answer.';chime('bad')}}}
+function openCertificate(){var name=cleanPlayerName(state.playerName)||'Explorer';$('#certificateName').textContent=name;$('#certificateCoins').textContent='🪙 '+state.coins+' coins';$('#certificateStars').textContent='⭐ '+state.stars+' stars';$('#certificateDate').textContent='Completed on '+new Date().toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});openModal('certificateModal')}
+
 function load(){
   try{
     var v4=JSON.parse(localStorage.getItem('mysteryIslandV4')||'null');
@@ -149,7 +214,7 @@ function celebrate(){var x=window.innerWidth/2,y=window.innerHeight/2;burst(x,y)
 function update(){
   state=healProgress(state);
   var done=state.completed.length;$('#hearts').textContent=state.hearts;$('#coins').textContent=state.coins;$('#starsN').textContent=state.stars;$('#progressText').textContent=done+' / 10';$('#progressBar').style.width=(done*10)+'%';$('#soundBtn').textContent=state.sound?'🔊':'🔇';
-  var marks=[];for(var i=1;i<=10;i++)marks.push(state.completed.indexOf(i)>-1?'✦':'◇');$('#shards').textContent=marks.join(' ');renderMap(state.chapter||1);save();
+  var marks=[];for(var i=1;i<=10;i++)marks.push(state.completed.indexOf(i)>-1?'✦':'◇');$('#shards').textContent=marks.join(' ');renderPlayer();renderMap(state.chapter||1);save();
 }
 function renderMap(ch){
   state.chapter=ch;var unlockedChapter2=state.completed.indexOf(5)>-1||state.unlocked>=6;$$('.chapter-tab').forEach(function(b){var c=+b.dataset.ch;b.classList.toggle('active',c===ch);b.classList.toggle('locked',c===2&&!unlockedChapter2)});
@@ -181,8 +246,21 @@ $$('.chapter-tab').forEach(function(b){b.onclick=function(){var ch=+b.dataset.ch
 $('#rewardNext').onclick=function(){var n=+this.dataset.level;if(n===10){$('#finalScore').textContent=state.coins+' coins · '+state.stars+' stars · 10 Starfire shards';show('finale')}else{if(n===5)state.chapter=2;show('map');renderMap(state.chapter)}};
 $('#finalHome').onclick=function(){show('home')};$('#againBtn').onclick=function(){state=JSON.parse(JSON.stringify(base));update();show('story')};$('#soundBtn').onclick=function(){state.sound=!state.sound;if(state.sound){ensureAudio();startAmbient();chime('good')}else stopAmbient();update()};
 $('#howBtn').onclick=function(){$('#howModal').classList.add('open')};$('#closeHow').onclick=function(){$('#howModal').classList.remove('open')};$('#howModal').onclick=function(e){if(e.target===this)this.classList.remove('open')};$('#guideButton').onclick=toggleGuide;
+
+$('#profileBtn').onclick=function(){ $('#nameInput').value=cleanPlayerName(state.playerName)||'';openModal('nameModal');setTimeout(function(){$('#nameInput').focus()},120)};
+$('#saveNameBtn').onclick=function(){var n=cleanPlayerName($('#nameInput').value)||'Explorer';state.playerName=n;save();renderPlayer();closeModal('nameModal');setGuide('Welcome, '+n+'! I’m Lumi. Let’s explore the island together.',true)};
+$('#nameInput').addEventListener('keydown',function(e){if(e.key==='Enter')$('#saveNameBtn').click()});
+$('#treasureBtn').onclick=function(){renderTreasureRoom();openModal('treasureModal')};
+$('#badgesBtn').onclick=function(){renderAchievements();openModal('badgesModal')};
+$('#dailyBtn').onclick=function(){renderDaily();openModal('dailyModal')};
+$('#certificateBtn').onclick=openCertificate;
+$('#printCertificateBtn').onclick=function(){window.print()};
+$('#closeCertificateBtn').onclick=function(){closeModal('certificateModal')};
+$('.modal-close').forEach(function(b){b.onclick=function(){closeModal(b.dataset.close)}});
+['nameModal','treasureModal','badgesModal','dailyModal','certificateModal'].forEach(function(id){var m=$('#'+id);if(m)m.addEventListener('click',function(e){if(e.target===m)closeModal(id)})});
+
 document.addEventListener('visibilitychange',function(){if(document.hidden)stopAmbient();else if(state.sound)startAmbient()});
-makeSky();update();setGuide('Welcome! I’m Lumi. I’ll explain every challenge and give you hints whenever you need me.');
+makeSky();update();setGuide('Welcome! I’m Lumi. I’ll explain every challenge and give you hints whenever you need me.');if(!cleanPlayerName(state.playerName)){setTimeout(function(){openModal('nameModal');$('#nameInput').focus()},500)}
 })();
 </script>
 </body>
