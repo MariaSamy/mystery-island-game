@@ -439,6 +439,11 @@ button:focus-visible{outline:3px solid rgba(142,234,255,.62);outline-offset:3px}
   .guide-button{order:1}
 }
 
+
+/* QA touch target fix for Crystal Cave */
+.hidden{width:48px;height:48px;display:grid;place-items:center;padding:0;transform:translate(-50%,-50%)}
+.hidden.found{transform:translate(-50%,-50%) scale(1.45)}
+
 </style>
 </head>
 <body>
@@ -530,7 +535,7 @@ var meta={
   15:{title:'Palace of Dreams',time:130,coins:400,stars:8,hint:'Watch the dream symbols flash, then repeat the growing sequence.'}
 };
 var base={hearts:3,coins:0,stars:0,completed:[],unlocked:1,sound:true,chapter:1,playerName:'',dailyDate:'',dailyRewardDate:'',streakCount:0,bestRatings:{},playCounts:{}};
-var state=load(),current=1,timerId=null,seconds=60,audio=null,ambientTimer=null,toastId=null,guideOpen=false,currentHint='Welcome to Mystery Island!',levelMistakes=0,levelVariant=0,isReplay=false;
+var state=load(),current=1,timerId=null,seconds=60,audio=null,ambientTimer=null,toastId=null,guideOpen=false,currentHint='Welcome to Mystery Island!',levelMistakes=0,levelVariant=0,isReplay=false,levelRunId=0;
 var nodeData={
   1:[{n:1,x:9,y:82,name:'Whispering Gate',type:'Riddle'},{n:2,x:35,y:60,name:'Firefly Grove',type:'Memory'},{n:3,x:58,y:59,name:'Moon Bridge',type:'Sequence'},{n:4,x:77,y:38,name:'Crystal Cave',type:'Hidden Stars'},{n:5,x:92,y:19,name:'Ancient Vault',type:'Final Trial'}],
   2:[{n:6,x:10,y:24,name:'Enchanted Forest',type:'Memory Trail'},{n:7,x:31,y:53,name:'Mermaid Lagoon',type:'Pearl Hunt'},{n:8,x:55,y:29,name:'Dragon Mountain',type:'Shield Memory'},{n:9,x:76,y:61,name:'Sky Temple',type:'Constellation'},{n:10,x:92,y:25,name:'Island Heart',type:'Final Harmony'}],
@@ -580,7 +585,7 @@ var dailyQuestions=[
   {q:'Forest power is represented by…',opts:['🌊 Wave','🍃 Leaf','⭐ Star','🔥 Flame'],a:1},
   {q:'Which place comes immediately after the Ancient Vault?',opts:['Dragon Mountain','Enchanted Forest','Sky Temple','Crystal Cave'],a:1},
   {q:'Fire power is represented by…',opts:['🔥 Flame','🌙 Moon','🔑 Key','🦪 Pearl'],a:0},
-  {q:'How many Starfire shards complete the full island journey?',opts:['5','8','10','12'],a:2}
+  {q:'How many Starfire shards complete the full island journey?',opts:['5','10','12','15'],a:3}
 ];
 
 function loadHall(){try{return JSON.parse(localStorage.getItem('mysteryIslandHall')||'[]')}catch(e){return []}}
@@ -664,7 +669,13 @@ function load(){
   return JSON.parse(JSON.stringify(base));
 }
 function save(){try{localStorage.setItem('mysteryIslandV4',JSON.stringify(state))}catch(e){}}
-function show(name){Object.keys(screens).forEach(function(k){screens[k].classList.remove('active')});screens[name].classList.add('active');window.scrollTo(0,0);if(name!=='level')setGuide('Tap me whenever you want a hint or a reminder.');}
+function cancelLevelRun(){levelRunId++;clearInterval(timerId);timerId=null}
+function show(name){
+  if(name!=='level')cancelLevelRun();
+  Object.keys(screens).forEach(function(k){screens[k].classList.remove('active')});
+  screens[name].classList.add('active');window.scrollTo(0,0);
+  if(name!=='level')setGuide('Tap me whenever you want a hint or a reminder.')
+}
 function makeSky(){for(var i=0;i<95;i++){var s=document.createElement('i');s.className='star'+(i%11===0?' big':'');s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.setProperty('--d',(2.1+Math.random()*4.2)+'s');$('#sky').appendChild(s)}}
 function isSmallScreen(){return !!(window.matchMedia&&window.matchMedia('(max-width:720px)').matches)}
 function closeGuide(){
@@ -733,11 +744,21 @@ function replayVariant(level,total){
   var count=Number(state.playCounts[String(level)]||1);
   return Math.max(0,(count-1)%total)
 }
-function startTimer(n){clearInterval(timerId);seconds=n;drawTimer();timerId=setInterval(function(){seconds--;drawTimer();if(seconds<=0){clearInterval(timerId);lose('Time vanished into the island mist.');setTimeout(function(){render(current);startTimer(meta[current].time)},900)}},1000)}
+function startTimer(n){
+  var run=levelRunId;clearInterval(timerId);seconds=n;drawTimer();
+  timerId=setInterval(function(){
+    if(run!==levelRunId){clearInterval(timerId);return}
+    seconds--;drawTimer();
+    if(seconds<=0){
+      clearInterval(timerId);lose('Time vanished into the island mist.');
+      setTimeout(function(){if(run!==levelRunId)return;render(current);startTimer(meta[current].time)},900)
+    }
+  },1000)
+}
 function drawTimer(){var m=String(Math.floor(seconds/60)).padStart(2,'0'),s=String(seconds%60).padStart(2,'0');$('#timer').textContent=m+':'+s}
 function lose(msg){levelMistakes++;state.hearts=Math.max(0,state.hearts-1);if(state.hearts===0){state.hearts=3;toast('Lumi restored your three hearts ✦')}else toast(msg);chime('bad');update()}
 function intro(icon,title,copy,steps){var stepHtml=(steps||[]).map(function(s,i){return '<div class="step"><strong>Step '+(i+1)+'</strong>'+s+'</div>'}).join('');return '<div class="stage-intro"><div class="icon">'+icon+'</div><h3>'+title+'</h3><p>'+copy+'</p></div><div class="guide-strip"><span class="mini">🧚</span><div><b>Lumi’s guide</b><p>'+meta[current].hint+'</p></div></div>'+(stepHtml?'<div class="steps">'+stepHtml+'</div>':'')}
-function enter(n){if(n>state.unlocked){toast('That path is still hidden in the mist.');return}if(window.MysteryMonetization)window.MysteryMonetization.gameplayStart();current=n;levelMistakes=0;isReplay=state.completed.indexOf(n)>-1;state.playCounts[String(n)]=Number(state.playCounts[String(n)]||0)+1;levelVariant=state.playCounts[String(n)]-1;save();$('#levelNo').textContent='LEVEL '+n;$('#levelTitle').textContent=meta[n].title;$('#remixBadge').classList.toggle('show',isReplay);setGuide(meta[n].hint,true);render(n);show('level');startTimer(meta[n].time)}
+function enter(n){if(n>state.unlocked){toast('That path is still hidden in the mist.');return}levelRunId++;if(window.MysteryMonetization)window.MysteryMonetization.gameplayStart();current=n;levelMistakes=0;isReplay=state.completed.indexOf(n)>-1;state.playCounts[String(n)]=Number(state.playCounts[String(n)]||0)+1;levelVariant=state.playCounts[String(n)]-1;save();$('#levelNo').textContent='LEVEL '+n;$('#levelTitle').textContent=meta[n].title;$('#remixBadge').classList.toggle('show',isReplay);setGuide(meta[n].hint,true);render(n);show('level');startTimer(meta[n].time)}
 function render(n){var fn={1:riddle,2:memory,3:sequence,4:cave,5:vault,6:forestTrail,7:lagoon,8:dragon,9:skyTemple,10:islandHeart,11:dreamGarden,12:mirrorLake,13:cloudLibrary,14:clockTower,15:dreamPalace}[n];if(fn)fn()}
 function riddle(){
   var st=$('#stage');
@@ -810,9 +831,9 @@ function cloudLibrary(){
   }
 }
 function clockTower(){
-  var st=$('#stage'),angle=0,hits=0,raf=null,running=true,last=0,speed=.12;
+  var st=$('#stage'),angle=0,hits=0,raf=null,running=true,last=0,speed=.12,run=levelRunId;
   st.innerHTML=intro('🕰️','Stop the clock in the light','Stop the golden hand when it reaches the glowing circle at the top. Do it three times.',['Watch the moving golden hand.','Tap STOP when the hand points into the green circle.','Get 3 successful stops.'])+'<div class="clock-face"><div class="clock-zone"></div><div class="clock-hand" id="clockHand"></div></div><button class="primary clock-btn" id="stopClock">STOP ✦</button><p class="feedback" id="fb">0 / 3 perfect stops</p>';
-  var hand=$('#clockHand');function loop(t){if(!running)return;if(!last)last=t;var dt=t-last;last=t;angle=(angle+dt*speed)%360;hand.style.transform='translateX(-50%) rotate('+angle+'deg)';raf=requestAnimationFrame(loop)}raf=requestAnimationFrame(loop);
+  var hand=$('#clockHand');function loop(t){if(!running||run!==levelRunId)return;if(!last)last=t;var dt=t-last;last=t;angle=(angle+dt*speed)%360;hand.style.transform='translateX(-50%) rotate('+angle+'deg)';raf=requestAnimationFrame(loop)}raf=requestAnimationFrame(loop);
   $('#stopClock').onclick=function(){var dist=Math.min(angle,360-angle);if(dist<=22){hits++;chime('good');$('#fb').className='feedback good';$('#fb').textContent=hits+' / 3 perfect stops';angle=140+Math.random()*120;speed+=.02;if(hits===3){running=false;cancelAnimationFrame(raf);complete(14)}}else{lose('The hand missed the glowing circle. Try again.');$('#fb').className='feedback bad';$('#fb').textContent='Wait until the hand reaches the top green circle.'}}
 }
 function dreamPalace(){
@@ -824,8 +845,8 @@ function dreamPalace(){
 }
 
 function complete(n){
-  clearInterval(timerId);if(window.MysteryMonetization)window.MysteryMonetization.gameplayStop();
-  setTimeout(function(){
+  var run=levelRunId;clearInterval(timerId);if(window.MysteryMonetization)window.MysteryMonetization.gameplayStop();
+  setTimeout(function(){if(run!==levelRunId)return;
     var fresh=state.completed.indexOf(n)===-1;
     if(fresh){
       state.completed.push(n);state.completed.sort(function(a,b){return a-b});
@@ -845,7 +866,20 @@ $('#startBtn').onclick=function(){ensureAudio();startAmbient();var go=function()
 $$('.chapter-tab').forEach(function(b){b.onclick=function(){var ch=+b.dataset.ch;if(ch===2&&!(state.completed.indexOf(5)>-1||state.unlocked>=6)){toast('Complete the Ancient Vault first.');return}if(ch===3&&!(state.completed.indexOf(10)>-1||state.unlocked>=11)){toast('Awaken the Island Heart first.');return}state.chapter=ch;renderMap(ch);save()}});
 $('#rewardNext').onclick=function(){var n=+this.dataset.level;var go=function(){if(n===15){$('#finalScore').textContent=state.coins+' coins · '+state.stars+' stars · 15 Starfire shards';show('finale')}else if(n===10){show('dreamgate')}else{if(n===5)state.chapter=2;show('map');renderMap(state.chapter)}};if(window.MysteryMonetization)window.MysteryMonetization.requestMidgame('level-complete',go);else go()};
 $('#enterDreamsBtn').onclick=function(){state.chapter=3;save();show('map');renderMap(3)};
-$('#finalHome').onclick=function(){show('home')};$('#againBtn').onclick=function(){var keepName=state.playerName;state=JSON.parse(JSON.stringify(base));state.playerName=keepName;update();show('story')};$('#soundBtn').onclick=function(){state.sound=!state.sound;if(state.sound){ensureAudio();startAmbient();chime('good')}else stopAmbient();update()};
+$('#finalHome').onclick=function(){show('home')};$('#againBtn').onclick=function(){
+  var keep={
+    playerName:state.playerName,
+    sound:state.sound,
+    dailyDate:state.dailyDate,
+    dailyRewardDate:state.dailyRewardDate,
+    streakCount:state.streakCount,
+    bestRatings:state.bestRatings,
+    playCounts:state.playCounts
+  };
+  state=JSON.parse(JSON.stringify(base));
+  Object.assign(state,keep);
+  update();show('story')
+};$('#soundBtn').onclick=function(){state.sound=!state.sound;if(state.sound){ensureAudio();startAmbient();chime('good')}else stopAmbient();update()};
 $('#howBtn').onclick=function(){$('#howModal').classList.add('open')};$('#closeHow').onclick=function(){$('#howModal').classList.remove('open')};$('#howModal').onclick=function(e){if(e.target===this)this.classList.remove('open')};$('#guideButton').onclick=toggleGuide;$('#guideClose').onclick=function(){closeGuide();$('#guideButton').classList.remove('has-hint')};
 
 function syncGuideForViewport(){if(isSmallScreen()&&guideOpen)closeGuide()}
@@ -858,6 +892,13 @@ $('#badgesBtn').onclick=function(){renderAchievements();openModal('badgesModal')
 $('#hallBtn').onclick=function(){renderHall();openModal('hallModal')};
 $('#dailyBtn').onclick=function(){renderDaily();openModal('dailyModal')};
 $('#dailyChestBtn').onclick=claimDailyReward;
+function syncRewardAdButton(provider){
+  var b=$('#rewardAdBtn');if(!b)return;
+  var active=provider&&provider!=='none';
+  b.disabled=!active;
+  b.textContent=active?'🎬 Watch Ad · +25 Coins':'🎬 Reward Ads · Awaiting Approval';
+  b.title=active?'Watch a rewarded advertisement for 25 coins':'Rewarded ads will unlock after monetization approval.'
+}
 $('#rewardAdBtn').onclick=function(){var b=this;if(!window.MysteryMonetization){toast('Rewarded ad is not available right now.');return}b.disabled=true;b.textContent='Preparing reward…';window.MysteryMonetization.requestRewarded('coin-gift',function(){state.coins+=25;update();chime('good');celebrate();toast('Reward earned: +25 coins ✨')},function(ok){b.disabled=false;b.textContent='🎬 Watch Ad · +25 Coins';if(!ok)toast('Rewarded ad was not completed. No coins were added.')})};
 $('#certificateBtn').onclick=openCertificate;
 $('#printCertificateBtn').onclick=function(){window.print()};
@@ -866,7 +907,7 @@ $$('.modal-close').forEach(function(b){b.onclick=function(){closeModal(b.dataset
 ['nameModal','treasureModal','badgesModal','dailyModal','hallModal','certificateModal'].forEach(function(id){var m=$('#'+id);if(m)m.addEventListener('click',function(e){if(e.target===m)closeModal(id)})});
 
 document.addEventListener('visibilitychange',function(){if(document.hidden)stopAmbient();else if(state.sound)startAmbient()});
-if(window.MysteryMonetization){window.MysteryMonetization.setHooks({pause:function(){clearInterval(timerId)},resume:function(){if(current&&screens.level.classList.contains('active'))startTimer(seconds||meta[current].time)},mute:function(){stopAmbient()},unmute:function(){if(state.sound)startAmbient()}});window.MysteryMonetization.init().catch(function(){})}
+if(window.MysteryMonetization){window.MysteryMonetization.setHooks({pause:function(){clearInterval(timerId)},resume:function(){if(current&&screens.level.classList.contains('active'))startTimer(seconds||meta[current].time)},mute:function(){stopAmbient()},unmute:function(){if(state.sound)startAmbient()}});window.MysteryMonetization.init().then(syncRewardAdButton).catch(function(){syncRewardAdButton('none')})}else{syncRewardAdButton('none')}
 makeSky();update();setGuide('Welcome! I’m Lumi. I’ll explain every challenge and give you hints whenever you need me.');if(!cleanPlayerName(state.playerName)){setTimeout(function(){openModal('nameModal');$('#nameInput').focus()},500)}
 })();
 </script>
