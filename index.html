@@ -361,6 +361,13 @@ main{position:relative;z-index:2}.screen{display:none;min-height:100vh;padding:9
 .hall-list{display:grid;gap:10px;margin-top:18px}.hall-row{display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center;padding:13px 15px;border-radius:16px;background:rgba(8,28,61,.62);border:1px solid rgba(174,225,255,.12)}.hall-rank{font-size:22px}.hall-row small{color:#9fb6ca}.hall-empty{padding:28px;text-align:center;color:#9fb6ca}
 @media(max-width:620px){.mirror-grid{grid-template-columns:repeat(3,1fr)}.harmony{grid-template-columns:repeat(2,1fr)}.clock-face{width:225px;height:225px}.clock-hand{height:78px}}
 
+
+/* V2 retention: daily chest, streak and level ratings */
+.return-card{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;margin-top:14px;padding:16px 18px;border-radius:20px;background:linear-gradient(135deg,rgba(255,210,92,.10),rgba(98,216,255,.07));border:1px solid rgba(255,225,145,.18)}
+.return-card .return-copy{min-width:0}.return-card .return-copy b{display:block;font-size:16px;color:#ffe39b}.return-card .return-copy small{display:block;margin-top:4px;color:#a9bfd1;line-height:1.4}.return-stats{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}.streak-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(255,117,69,.10);border:1px solid rgba(255,174,119,.18);font-size:13px;font-weight:800}.daily-chest-btn{min-width:170px}.daily-chest-btn:disabled{opacity:.55;cursor:default;transform:none}
+.level-rating{margin:18px auto 0;padding:14px 16px;border-radius:18px;background:rgba(255,224,138,.07);border:1px solid rgba(255,224,138,.17);text-align:center}.level-rating b{display:block;color:#ffe39b;margin-bottom:6px}.rating-crowns{font-size:28px;letter-spacing:6px}.rating-note{display:block;color:#9fb6ca;margin-top:5px;font-size:13px}
+@media(max-width:620px){.return-card{grid-template-columns:1fr}.daily-chest-btn{width:100%}}
+
 </style>
 </head>
 <body>
@@ -379,6 +386,7 @@ main{position:relative;z-index:2}.screen{display:none;min-height:100vh;padding:9
     <p class="welcome-player" id="welcomePlayer">Welcome, Explorer ✨</p>
     <div class="actions"><button class="primary" id="startBtn">Begin the Adventure →</button><button class="ghost" id="howBtn">How to Play</button></div>
     <div class="feature-actions"><button class="ghost" id="dailyBtn">☀ Daily Challenge</button><button class="ghost" id="treasureBtn">🎁 Treasure Room</button><button class="ghost" id="badgesBtn">🏆 Achievements</button><button class="ghost" id="hallBtn">🌟 Hall of Fame</button><button class="ghost" id="rewardAdBtn">🎬 Watch Ad · +25 Coins</button></div>
+    <div class="return-card"><div class="return-copy"><b>🎁 Daily Treasure Chest</b><small>Return each day to grow your streak and collect a bigger treasure.</small><div class="return-stats"><span class="streak-chip">🔥 <span id="streakN">0 day streak</span></span><span class="streak-chip">🪙 <span id="nextDailyReward">25 coins today</span></span></div></div><button class="primary daily-chest-btn" id="dailyChestBtn">Open Daily Chest</button></div>
     <div class="guide-home"><div class="guide-face">🧚</div><p><b>Hello, I’m Lumi.</b><br>I’ll travel with you. On every level I’ll explain exactly what to do — and I can give you a hint whenever you need one.</p></div>
     <div class="progress"><p><b>Island Journey</b> <span id="progressText" style="float:right">0 / 10</span></p><div class="track"><i id="progressBar"></i></div></div>
   </div>
@@ -404,7 +412,7 @@ main{position:relative;z-index:2}.screen{display:none;min-height:100vh;padding:9
 
 <section id="level" class="screen"><div class="level-shell"><div class="level-head"><button class="round" id="backBtn">←</button><div><p class="eyebrow" id="levelNo">LEVEL 1</p><h2 id="levelTitle">Whispering Gate</h2></div><div class="timer" id="timer">01:00</div></div><div id="stage" class="stage glass"></div></div></section>
 
-<section id="reward" class="screen reward"><div class="reward-card glass"><div class="big-shard">✦</div><p class="eyebrow">TRIAL COMPLETE</p><h2 id="rewardTitle">The path awakens.</h2><p id="rewardText" style="color:#adc4d7">A Starfire shard rises from the ancient stone.</p><div class="rewards"><div>🪙<b id="rc">+50</b><small>Coins</small></div><div>⭐<b id="rs">+3</b><small>Stars</small></div><div>✦<b id="rsh">1/15</b><small>Shards</small></div></div><button class="primary" id="rewardNext">Return to the Map →</button></div></section>
+<section id="reward" class="screen reward"><div class="reward-card glass"><div class="big-shard">✦</div><p class="eyebrow">TRIAL COMPLETE</p><h2 id="rewardTitle">The path awakens.</h2><p id="rewardText" style="color:#adc4d7">A Starfire shard rises from the ancient stone.</p><div class="rewards"><div>🪙<b id="rc">+50</b><small>Coins</small></div><div>⭐<b id="rs">+3</b><small>Stars</small></div><div>✦<b id="rsh">1/15</b><small>Shards</small></div></div><div class="level-rating" id="levelRating"><b>Level Rating</b><div class="rating-crowns" id="ratingCrowns">👑</div><small class="rating-note" id="ratingNote">Complete the level to earn your rating.</small></div><button class="primary" id="rewardNext">Return to the Map →</button></div></section>
 
 <section id="dreamgate" class="screen finale"><div class="transition-card glass"><div class="dream-portal">🌌</div><p class="eyebrow">A NEW PATH AWAKENS</p><h2>The Heart begins to dream.</h2><p style="color:#adc4d7;line-height:1.75">As the tenth Starfire shard touches the island heart, the night sky folds open like a curtain. Lumi sees a third map written in constellations — a place where memories, mirrors, words, time and dreams become real.</p><blockquote style="font:italic 20px Georgia,serif;color:#f5dfa1">“The island is awake. Now discover what it dreams.”</blockquote><button class="primary" id="enterDreamsBtn">Enter Chapter III ✦</button></div></section>
 
@@ -450,15 +458,15 @@ var meta={
   14:{title:'Clockwork Tower',time:100,coins:240,stars:5,hint:'Stop the golden hand when it reaches the glowing green circle. Do it three times.'},
   15:{title:'Palace of Dreams',time:130,coins:400,stars:8,hint:'Watch the dream symbols flash, then repeat the growing sequence.'}
 };
-var base={hearts:3,coins:0,stars:0,completed:[],unlocked:1,sound:true,chapter:1,playerName:'',dailyDate:''};
-var state=load(),current=1,timerId=null,seconds=60,audio=null,ambientTimer=null,toastId=null,guideOpen=false,currentHint='Welcome to Mystery Island!';
+var base={hearts:3,coins:0,stars:0,completed:[],unlocked:1,sound:true,chapter:1,playerName:'',dailyDate:'',dailyRewardDate:'',streakCount:0,bestRatings:{}};
+var state=load(),current=1,timerId=null,seconds=60,audio=null,ambientTimer=null,toastId=null,guideOpen=false,currentHint='Welcome to Mystery Island!',levelMistakes=0;
 var nodeData={
   1:[{n:1,x:9,y:82,name:'Whispering Gate',type:'Riddle'},{n:2,x:35,y:60,name:'Firefly Grove',type:'Memory'},{n:3,x:58,y:59,name:'Moon Bridge',type:'Sequence'},{n:4,x:77,y:38,name:'Crystal Cave',type:'Hidden Stars'},{n:5,x:92,y:19,name:'Ancient Vault',type:'Final Trial'}],
   2:[{n:6,x:10,y:24,name:'Enchanted Forest',type:'Memory Trail'},{n:7,x:31,y:53,name:'Mermaid Lagoon',type:'Pearl Hunt'},{n:8,x:55,y:29,name:'Dragon Mountain',type:'Shield Memory'},{n:9,x:76,y:61,name:'Sky Temple',type:'Constellation'},{n:10,x:92,y:25,name:'Island Heart',type:'Final Harmony'}],
   3:[{n:11,x:10,y:70,name:'Dream Garden',type:'Butterfly Hunt'},{n:12,x:30,y:36,name:'Mirror Lake',type:'Reflection Match'},{n:13,x:53,y:63,name:'Cloud Library',type:'Word Magic'},{n:14,x:75,y:32,name:'Clockwork Tower',type:'Timing'},{n:15,x:92,y:57,name:'Palace of Dreams',type:'Dream Sequence'}]
 };
 function healProgress(p){
-  p=Object.assign({},base,p,{completed:Array.isArray(p.completed)?p.completed:[]});
+  p=Object.assign({},base,p,{completed:Array.isArray(p.completed)?p.completed:[],bestRatings:(p.bestRatings&&typeof p.bestRatings==='object')?p.bestRatings:{}});
   var highest=p.completed.length?Math.max.apply(null,p.completed):0;
   p.unlocked=Math.max(1,p.unlocked||1,Math.min(15,highest+1));
   if(p.completed.indexOf(5)>-1)p.unlocked=Math.max(p.unlocked,6);
@@ -490,7 +498,9 @@ var achievementDefs=[
   {icon:'🌟',name:'Star Collector',desc:'Collect 30 stars',test:function(){return state.stars>=30}},
   {icon:'👑',name:'Island Guardian',desc:'Complete Chapter II',test:function(){return state.completed.indexOf(10)>-1}},
   {icon:'🌌',name:'Dream Walker',desc:'Enter Chapter III',test:function(){return state.completed.indexOf(11)>-1}},
-  {icon:'🏰',name:'Keeper of Dreams',desc:'Complete all 15 levels',test:function(){return state.completed.indexOf(15)>-1}}
+  {icon:'🏰',name:'Keeper of Dreams',desc:'Complete all 15 levels',test:function(){return state.completed.indexOf(15)>-1}},
+  {icon:'🔥',name:'Three-Day Flame',desc:'Reach a 3-day return streak',test:function(){return state.streakCount>=3}},
+  {icon:'🌞',name:'Seven-Day Voyager',desc:'Reach a 7-day return streak',test:function(){return state.streakCount>=7}}
 ];
 var dailyQuestions=[
   {q:'Which magical object opens a lock?',opts:['🌙 Moon','🔑 Key','🌊 Wave','🍃 Leaf'],a:1},
@@ -514,6 +524,52 @@ function renderHall(){
   var g=$('#hallList');if(!g)return;var hall=loadHall();
   if(!hall.length){g.innerHTML='<div class="hall-empty">Complete Chapter III to place your name here. ✨</div>';return}
   g.innerHTML='';hall.forEach(function(h,i){var d=document.createElement('div');d.className='hall-row';var medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'✦';var dt=new Date(h.date);d.innerHTML='<div class="hall-rank">'+medal+'</div><div><b>'+String(h.name).replace(/[<>]/g,'')+'</b><br><small>'+dt.toLocaleDateString()+'</small></div><div><b>⭐ '+(h.stars||0)+'</b><br><small>🪙 '+(h.coins||0)+'</small></div>';g.appendChild(d)})
+}
+
+
+function previousDateKey(){
+  var d=new Date();d.setDate(d.getDate()-1);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')
+}
+function dailyRewardAmount(streak){
+  var rewards=[25,30,35,40,45,50,60];
+  return rewards[Math.min(Math.max((streak||1)-1,0),rewards.length-1)]
+}
+function renderReturnRewards(){
+  if(!$('#dailyChestBtn'))return;
+  var today=localDateKey(),claimed=state.dailyRewardDate===today;
+  var nextStreak=state.dailyRewardDate===previousDateKey()?Math.max(1,(state.streakCount||0)+1):claimed?Math.max(1,state.streakCount||1):1;
+  var amount=dailyRewardAmount(nextStreak);
+  $('#streakN').textContent=(state.streakCount||0)+' day'+((state.streakCount||0)===1?'':'s')+' streak';
+  $('#nextDailyReward').textContent=claimed?'Treasure collected':'+'+amount+' coins'+(nextStreak%7===0?' + 3 stars':'');
+  $('#dailyChestBtn').disabled=claimed;
+  $('#dailyChestBtn').textContent=claimed?'Collected Today ✓':'Open Daily Chest';
+}
+function claimDailyReward(){
+  var today=localDateKey();
+  if(state.dailyRewardDate===today){toast('Today’s treasure chest is already collected.');return}
+  var continuing=state.dailyRewardDate===previousDateKey();
+  state.streakCount=continuing?Math.max(1,(state.streakCount||0)+1):1;
+  var amount=dailyRewardAmount(state.streakCount);
+  var starBonus=state.streakCount%7===0?3:0;
+  state.dailyRewardDate=today;state.coins+=amount;state.stars+=starBonus;
+  save();update();chime('magic');celebrate();
+  toast('Daily treasure: +'+amount+' coins'+(starBonus?' + '+starBonus+' stars':'')+' ✨')
+}
+function calculateLevelRating(n){
+  var max=meta[n]&&meta[n].time?meta[n].time:60;
+  var timeRatio=Math.max(0,Math.min(1,seconds/max));
+  var rating=1;
+  if(levelMistakes===0&&timeRatio>=0.35)rating=3;
+  else if(levelMistakes<=1&&timeRatio>=0.12)rating=2;
+  var note=rating===3?'Brilliant — quick and mistake-free!':rating===2?'Well done — a strong finish.':'Completed — replay to improve your crown rating.';
+  return {rating:rating,note:note}
+}
+function showLevelRating(n){
+  var x=calculateLevelRating(n),key=String(n),best=Math.max(Number(state.bestRatings[key]||0),x.rating);
+  state.bestRatings[key]=best;
+  $('#ratingCrowns').textContent='👑'.repeat(x.rating)+'·'.repeat(3-x.rating);
+  $('#ratingNote').textContent=x.note+(best>x.rating?' Best: '+best+'/3 crowns.':'');
 }
 
 function localDateKey(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
@@ -552,7 +608,7 @@ function celebrate(){var x=window.innerWidth/2,y=window.innerHeight/2;burst(x,y)
 function update(){
   state=healProgress(state);
   var done=state.completed.length;$('#hearts').textContent=state.hearts;$('#coins').textContent=state.coins;$('#starsN').textContent=state.stars;$('#progressText').textContent=done+' / 15';$('#progressBar').style.width=(done/15*100)+'%';$('#soundBtn').textContent=state.sound?'🔊':'🔇';
-  var marks=[];for(var i=1;i<=15;i++)marks.push(state.completed.indexOf(i)>-1?'✦':'◇');$('#shards').textContent=marks.join(' ');renderPlayer();renderMap(state.chapter||1);save();
+  var marks=[];for(var i=1;i<=15;i++)marks.push(state.completed.indexOf(i)>-1?'✦':'◇');$('#shards').textContent=marks.join(' ');renderPlayer();renderReturnRewards();renderMap(state.chapter||1);save();
 }
 function renderMap(ch){
   var unlocked2=state.completed.indexOf(5)>-1||state.unlocked>=6;
@@ -579,9 +635,9 @@ function renderMap(ch){
 }
 function startTimer(n){clearInterval(timerId);seconds=n;drawTimer();timerId=setInterval(function(){seconds--;drawTimer();if(seconds<=0){clearInterval(timerId);lose('Time vanished into the island mist.');setTimeout(function(){render(current);startTimer(meta[current].time)},900)}},1000)}
 function drawTimer(){var m=String(Math.floor(seconds/60)).padStart(2,'0'),s=String(seconds%60).padStart(2,'0');$('#timer').textContent=m+':'+s}
-function lose(msg){state.hearts=Math.max(0,state.hearts-1);if(state.hearts===0){state.hearts=3;toast('Lumi restored your three hearts ✦')}else toast(msg);chime('bad');update()}
+function lose(msg){levelMistakes++;state.hearts=Math.max(0,state.hearts-1);if(state.hearts===0){state.hearts=3;toast('Lumi restored your three hearts ✦')}else toast(msg);chime('bad');update()}
 function intro(icon,title,copy,steps){var stepHtml=(steps||[]).map(function(s,i){return '<div class="step"><strong>Step '+(i+1)+'</strong>'+s+'</div>'}).join('');return '<div class="stage-intro"><div class="icon">'+icon+'</div><h3>'+title+'</h3><p>'+copy+'</p></div><div class="guide-strip"><span class="mini">🧚</span><div><b>Lumi’s guide</b><p>'+meta[current].hint+'</p></div></div>'+(stepHtml?'<div class="steps">'+stepHtml+'</div>':'')}
-function enter(n){if(n>state.unlocked){toast('That path is still hidden in the mist.');return}if(window.MysteryMonetization)window.MysteryMonetization.gameplayStart();current=n;$('#levelNo').textContent='LEVEL '+n;$('#levelTitle').textContent=meta[n].title;setGuide(meta[n].hint,true);render(n);show('level');setGuide(meta[n].hint,true);startTimer(meta[n].time)}
+function enter(n){if(n>state.unlocked){toast('That path is still hidden in the mist.');return}if(window.MysteryMonetization)window.MysteryMonetization.gameplayStart();current=n;levelMistakes=0;$('#levelNo').textContent='LEVEL '+n;$('#levelTitle').textContent=meta[n].title;setGuide(meta[n].hint,true);render(n);show('level');setGuide(meta[n].hint,true);startTimer(meta[n].time)}
 function render(n){var fn={1:riddle,2:memory,3:sequence,4:cave,5:vault,6:forestTrail,7:lagoon,8:dragon,9:skyTemple,10:islandHeart,11:dreamGarden,12:mirrorLake,13:cloudLibrary,14:clockTower,15:dreamPalace}[n];if(fn)fn()}
 function riddle(){var st=$('#stage');st.innerHTML=intro('🗿','The gate listens for one true answer','Choose the object that matches every clue.',['Read all four lines.','Compare the four answers.','Tap the answer that fits every clue.'])+'<div class="riddle">I have keys but no locks,<br>I have space but no room,<br>You can enter, but you cannot go outside.<br><b>What am I?</b></div><div class="answers"><button class="answer" data-a="door">🚪 A Door</button><button class="answer" data-a="keyboard">⌨️ A Keyboard</button><button class="answer" data-a="map">🗺️ A Map</button><button class="answer" data-a="chest">🧰 A Treasure Chest</button></div><p class="feedback" id="fb"></p>';st.querySelector('.answers').onclick=function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.a==='keyboard'){b.classList.add('good');$('#fb').className='feedback good';$('#fb').textContent='Correct! The stone gate is waking…';complete(1)}else{b.classList.add('bad');$('#fb').className='feedback bad';$('#fb').textContent='Hint: keys, space, enter.';lose('A rune dimmed. Try another answer.')}}}
 function memory(){var st=$('#stage'),symbols=['🌙','⭐','🔑','💎','🍃','🔥'],deck=symbols.concat(symbols).sort(function(){return Math.random()-.5}),open=[],matched=0;st.innerHTML=intro('🧚‍♀️','Wake the sleeping fireflies','Find all six matching pairs.',['Tap one card to reveal its symbol.','Tap a second card.','If the symbols match, the pair stays open.'])+'<div class="memory" id="memory"></div><p class="feedback" id="fb">0 / 6 pairs found</p>';var g=$('#memory');deck.forEach(function(sym,i){var b=document.createElement('button');b.className='card closed';b.textContent='✦';b.dataset.sym=sym;b.dataset.i=i;g.appendChild(b)});g.onclick=function(e){var b=e.target.closest('.card');if(!b||b.classList.contains('matched')||open.indexOf(b)>-1||open.length===2)return;b.classList.remove('closed');b.textContent=b.dataset.sym;chime('tap');open.push(b);if(open.length===2){setTimeout(function(){if(open[0].dataset.sym===open[1].dataset.sym){open.forEach(function(x){x.classList.add('matched')});matched++;$('#fb').textContent=matched+' / 6 pairs found';chime('good');if(matched===6){$('#fb').className='feedback good';$('#fb').textContent='All six pairs are glowing!';complete(2)}}else{open.forEach(function(x){x.classList.add('closed');x.textContent='✦'})}open=[]},650)}}}
@@ -642,7 +698,7 @@ function complete(n){
     }
     $('#rewardTitle').textContent=n===5?'A second map appears!':n===10?'The Heart opens a dream gate!':n===15?'You became a Keeper of Dreams!':'The path awakens.';
     $('#rewardText').textContent=n===5?'The Ancient Vault opens. Inside is a glowing map marked “Beyond the Vault”.':n===10?'The Island Heart awakens — and a doorway of stars appears in the sky.':n===15?'All fifteen Starfire shards join above the Palace of Dreams.':'The '+meta[n].title+' releases another Starfire shard.';
-    $('#rc').textContent=fresh?'+'+meta[n].coins:'Replay';$('#rs').textContent=fresh?'+'+meta[n].stars:'✓';$('#rsh').textContent=state.completed.length+'/15';
+    $('#rc').textContent=fresh?'+'+meta[n].coins:'Replay';$('#rs').textContent=fresh?'+'+meta[n].stars:'✓';$('#rsh').textContent=state.completed.length+'/15';showLevelRating(n);save();
     $('#rewardNext').textContent=n===15?'Celebrate the Dream ✦':n===10?'Open the Dream Gate →':n===5?'Enter Chapter II →':'Return to the Map →';
     $('#rewardNext').dataset.level=n;celebrate();show('reward')
   },650)
@@ -661,6 +717,7 @@ $('#treasureBtn').onclick=function(){renderTreasureRoom();openModal('treasureMod
 $('#badgesBtn').onclick=function(){renderAchievements();openModal('badgesModal')};
 $('#hallBtn').onclick=function(){renderHall();openModal('hallModal')};
 $('#dailyBtn').onclick=function(){renderDaily();openModal('dailyModal')};
+$('#dailyChestBtn').onclick=claimDailyReward;
 $('#rewardAdBtn').onclick=function(){var b=this;if(!window.MysteryMonetization){toast('Rewarded ad is not available right now.');return}b.disabled=true;b.textContent='Preparing reward…';window.MysteryMonetization.requestRewarded('coin-gift',function(){state.coins+=25;update();chime('good');celebrate();toast('Reward earned: +25 coins ✨')},function(ok){b.disabled=false;b.textContent='🎬 Watch Ad · +25 Coins';if(!ok)toast('Rewarded ad was not completed. No coins were added.')})};
 $('#certificateBtn').onclick=openCertificate;
 $('#printCertificateBtn').onclick=function(){window.print()};
