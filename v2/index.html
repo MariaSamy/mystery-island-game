@@ -350,6 +350,83 @@ main{position:relative;z-index:2}.screen{display:none;min-height:100vh;padding:9
 .remix-badge{display:none;margin-top:5px;width:max-content;max-width:100%;padding:5px 9px;border-radius:999px;border:1px solid rgba(202,179,255,.24);background:rgba(127,82,183,.13);color:#e6d8ff;font-size:11px;font-weight:900;letter-spacing:.08em}
 .remix-badge.show{display:inline-flex;align-items:center;gap:5px}
 
+
+/* V2 mobile & touch polish */
+body{overflow-x:hidden;-webkit-text-size-adjust:100%}
+button,.node,.card,.answer,.daily-option,.word-orb,.symbol,.shield,.lantern,.bubble,.dream-item{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid rgba(142,234,255,.62);outline-offset:3px}
+.timer{min-width:64px;text-align:center;padding:7px 10px;border-radius:999px;background:rgba(8,27,58,.72);border:1px solid rgba(255,225,137,.15)}
+.modal-card{max-height:calc(100dvh - 36px);overflow-y:auto;overscroll-behavior:contain}
+@media(max-width:720px){
+  header{padding-left:max(9px,env(safe-area-inset-left));padding-right:max(9px,env(safe-area-inset-right))}
+  .round{width:44px;height:44px;min-width:44px;min-height:44px}
+  .feature-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .feature-actions .ghost{min-height:48px;padding:8px 10px;line-height:1.25}
+  .heading{align-items:flex-start;flex-wrap:wrap}
+  .heading .ghost{min-height:44px}
+  .chapter-tab{min-height:48px;padding:8px 10px}
+  .map{border-radius:22px}
+  .map-footer{flex-direction:column;align-items:flex-start}
+  .shards{font-size:16px;letter-spacing:3px;line-height:1.55;word-break:break-word}
+  .level-head{grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center}
+  .level-head h2{font-size:clamp(22px,6vw,28px);line-height:1.1;overflow-wrap:anywhere}
+  .level-head .eyebrow{margin-bottom:3px}
+  .timer{font-size:14px;min-width:62px;padding:7px 8px}
+  .stage-intro .icon{font-size:50px}
+  .stage-intro h3{font-size:clamp(23px,6vw,28px)}
+  .riddle{font-size:18px;line-height:1.6;padding:18px 15px}
+  .answer,.daily-option,.word-orb{min-height:50px}
+  .symbol{width:54px;height:54px}
+  .guide-float{right:max(10px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom))}
+  .guide-button{width:52px;height:52px;font-size:30px}
+  .guide-bubble{width:min(285px,calc(100vw - 82px));max-height:220px;overflow-y:auto}
+  .modal{padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
+  .modal-card{padding:24px 17px;border-radius:22px;max-height:calc(100dvh - 24px)}
+  .return-card{padding:15px}
+  .daily-chest-btn{min-height:48px}
+}
+@media(max-width:480px){
+  header{min-height:64px;height:64px;gap:6px}
+  .brand{gap:6px;min-width:0}
+  .brand .orb{width:34px;height:34px;font-size:16px;flex:0 0 34px}
+  .brand b{font-size:13px;white-space:nowrap}
+  .stats{gap:4px;flex-shrink:0}
+  .pill{padding:6px 6px;font-size:11px}
+  .stats .round{width:40px;height:40px;min-width:40px;min-height:40px}
+  .screen{padding-left:9px;padding-right:9px}
+  .hero{padding-left:15px;padding-right:15px}
+  .hero h1{font-size:clamp(31px,10vw,38px);line-height:1.03}
+  .feature-actions{grid-template-columns:1fr}
+  .collection-grid,.badge-grid{grid-template-columns:1fr}
+  .map{height:500px}
+  .node span{width:58px;height:58px}
+  .node b{font-size:10px;line-height:1.15;max-width:74px}
+  .level-head{grid-template-columns:42px minmax(0,1fr);align-items:start}
+  .level-head>.timer{grid-column:2;justify-self:start;margin-top:2px}
+  .level-head .round{width:42px;height:42px;min-width:42px;min-height:42px}
+  .stage{padding:18px 10px;border-radius:22px}
+  .memory{gap:7px}
+  .card{border-radius:15px;font-size:34px}
+  .forest,.lagoon,.skytemple{height:330px;border-radius:22px}
+  .lantern,.bubble{width:58px;height:58px}
+  .shields{gap:8px}
+  .shield{border-radius:17px;font-size:34px;min-height:76px}
+  .mirror-grid{gap:8px}
+  .mirror-tile{min-height:72px;font-size:29px}
+  .word-orbs{gap:8px}
+  .word-orb{min-width:74px;padding:0 13px}
+  .clock-face{width:min(220px,70vw);height:min(220px,70vw)}
+  .clock-zone{width:50px;height:50px}
+  .harmony{gap:8px}
+  .harmony button{min-height:76px;font-size:32px}
+  .return-stats{gap:7px}
+  .streak-chip{font-size:12px;padding:6px 8px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
 </style>
 </head>
 <body>
@@ -370,7 +447,7 @@ main{position:relative;z-index:2}.screen{display:none;min-height:100vh;padding:9
     <div class="feature-actions"><button class="ghost" id="dailyBtn">☀ Daily Challenge</button><button class="ghost" id="treasureBtn">🎁 Treasure Room</button><button class="ghost" id="badgesBtn">🏆 Achievements</button><button class="ghost" id="hallBtn">🌟 Hall of Fame</button><button class="ghost" id="rewardAdBtn">🎬 Watch Ad · +25 Coins</button></div>
     <div class="return-card"><div class="return-copy"><b>🎁 Daily Treasure Chest</b><small>Return each day to grow your streak and collect a bigger treasure.</small><div class="return-stats"><span class="streak-chip">🔥 <span id="streakN">0 day streak</span></span><span class="streak-chip">🪙 <span id="nextDailyReward">25 coins today</span></span></div></div><button class="primary daily-chest-btn" id="dailyChestBtn">Open Daily Chest</button></div>
     <div class="guide-home"><div class="guide-face">🧚</div><p><b>Hello, I’m Lumi.</b><br>I’ll travel with you. On every level I’ll explain exactly what to do — and I can give you a hint whenever you need one.</p></div>
-    <div class="progress"><p><b>Island Journey</b> <span id="progressText" style="float:right">0 / 10</span></p><div class="track"><i id="progressBar"></i></div></div>
+    <div class="progress"><p><b>Island Journey</b> <span id="progressText" style="float:right">0 / 15</span></p><div class="track"><i id="progressBar"></i></div></div>
   </div>
 </section>
 
