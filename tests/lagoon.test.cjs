@@ -37,7 +37,7 @@ function harness() {
     clearLevelJobs:()=>{}, $$: () => Array.from({length:4},()=>new Element()), setGuide: () => {}, intro: () => '', chime: () => {}, toast: () => {}, update: () => {}, celebrate: () => {}, recordHall: () => {},
     state: {hearts: 3, completed: [1,2,3,4,5], unlocked: 6, coins: 0, stars: 0, chapter: 2},
     meta: {6:{time:95,coins:140,stars:4,title:'Enchanted Forest'},7:{time:90,coins:150,stars:4,title:'Mermaid Lagoon'},8:{time:100,coins:180,stars:4,title:'Dragon Mountain'}},
-    current: 6, seconds: 0, timerId: null, levelJobs: new Set(), levelFrames: new Set(), levelComplete: false,
+    TOTAL_LEVELS:20, current: 6, seconds: 0, timerId: null, levelJobs: new Set(), levelFrames: new Set(), levelComplete: false,
     window: {scrollTo:()=>{}}, screens: {level:new Element(),map:new Element(),reward:new Element(),dreamgate:new Element(),finale:new Element()}, show: screen => { context.screen = screen; },
     setTimeout: (fn, ms) => schedule(fn, ms, 0), setInterval: (fn, ms) => schedule(fn, ms, ms),
     clearInterval: id => jobs.delete(id), clearTimeout: id => jobs.delete(id), requestAnimationFrame: fn => schedule(() => fn(time),16,0), cancelAnimationFrame: id => jobs.delete(id), Math
